@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import {
   Table,
@@ -83,10 +84,18 @@ const TableView = ({ timeFrame, category, searchQuery }: TableViewProps) => {
     // Generate a random ID for the new item
     const newId = Math.random().toString(36).substring(2, 9);
     
-    // Add the new item to the data
+    // Get current date in ISO format (YYYY-MM-DD)
+    const currentDate = new Date().toISOString().split('T')[0];
+    
+    // Add the new item to the data with the required date property
     const newItem: SKUData = {
       id: newId,
       ...values,
+      date: currentDate,
+      // Add default values for optional properties in SKUData
+      actualSales: 0,
+      forecastStock: Math.max(0, values.currentStock - values.forecastSales),
+      accuracy: 100,
     };
     
     setData([newItem, ...data]);
