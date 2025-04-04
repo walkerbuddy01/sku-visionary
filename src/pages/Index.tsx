@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, LayoutGrid, BarChart } from "lucide-react";
+import { Search, LayoutGrid, BarChart, Plus } from "lucide-react";
 import Dashboard from "@/components/Dashboard";
 import TableView from "@/components/TableView";
 import GraphView from "@/components/GraphView";
@@ -15,6 +15,7 @@ const Index = () => {
   const [timeFrame, setTimeFrame] = useState<"daily" | "weekly" | "monthly" | "quarterly" | "yearly">("monthly");
   const [activeTab, setActiveTab] = useState<"salesTrends" | "financialGoals" | "manual">("salesTrends");
   const [searchQuery, setSearchQuery] = useState("");
+  const [isAddDataOpen, setIsAddDataOpen] = useState(false);
 
   const timeFrameOptions = [
     { value: "daily", label: "Daily" },
@@ -29,11 +30,19 @@ const Index = () => {
       <Sidebar />
       <div className="flex-1 md:ml-64 p-4 md:p-6 pt-16 md:pt-6">
         <div className="max-w-7xl mx-auto">
-          <header className="mb-8">
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Forecasting - Inventory</h1>
-            <p className="text-gray-500 mt-2">
-              Track and analyze your inventory SKU performance
-            </p>
+          <header className="mb-8 flex justify-between items-center">
+            <div>
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Forecasting - Inventory</h1>
+              <p className="text-gray-500 mt-2">
+                Track and analyze your inventory SKU performance
+              </p>
+            </div>
+            <Button 
+              onClick={() => setIsAddDataOpen(true)} 
+              className="bg-indigo-700 hover:bg-indigo-800 flex items-center gap-2"
+            >
+              <Plus className="h-4 w-4" /> Add Data
+            </Button>
           </header>
 
           {/* Dashboard Cards */}
@@ -104,7 +113,7 @@ const Index = () => {
 
               <TabsContent value="salesTrends">
                 {viewMode === "table" ? (
-                  <TableView timeFrame={timeFrame} category="salesTrends" searchQuery={searchQuery} />
+                  <TableView timeFrame={timeFrame} category="salesTrends" searchQuery={searchQuery} isAddDataOpen={isAddDataOpen} setIsAddDataOpen={setIsAddDataOpen} />
                 ) : (
                   <GraphView timeFrame={timeFrame} category="salesTrends" searchQuery={searchQuery} />
                 )}
@@ -112,7 +121,7 @@ const Index = () => {
               
               <TabsContent value="financialGoals">
                 {viewMode === "table" ? (
-                  <TableView timeFrame={timeFrame} category="financialGoals" searchQuery={searchQuery} />
+                  <TableView timeFrame={timeFrame} category="financialGoals" searchQuery={searchQuery} isAddDataOpen={isAddDataOpen} setIsAddDataOpen={setIsAddDataOpen} />
                 ) : (
                   <GraphView timeFrame={timeFrame} category="financialGoals" searchQuery={searchQuery} />
                 )}
@@ -120,7 +129,7 @@ const Index = () => {
               
               <TabsContent value="manual">
                 {viewMode === "table" ? (
-                  <TableView timeFrame={timeFrame} category="manual" searchQuery={searchQuery} />
+                  <TableView timeFrame={timeFrame} category="manual" searchQuery={searchQuery} isAddDataOpen={isAddDataOpen} setIsAddDataOpen={setIsAddDataOpen} />
                 ) : (
                   <GraphView timeFrame={timeFrame} category="manual" searchQuery={searchQuery} />
                 )}

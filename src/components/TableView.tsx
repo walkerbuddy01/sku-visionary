@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import {
   Table,
@@ -25,6 +24,8 @@ interface TableViewProps {
   timeFrame: "daily" | "weekly" | "monthly" | "quarterly" | "yearly";
   category: "salesTrends" | "financialGoals" | "manual";
   searchQuery: string;
+  isAddDataOpen: boolean;
+  setIsAddDataOpen: (isOpen: boolean) => void;
 }
 
 const addDataSchema = z.object({
@@ -39,11 +40,10 @@ const addDataSchema = z.object({
 
 type AddDataFormValues = z.infer<typeof addDataSchema>;
 
-const TableView = ({ timeFrame, category, searchQuery }: TableViewProps) => {
+const TableView = ({ timeFrame, category, searchQuery, isAddDataOpen, setIsAddDataOpen }: TableViewProps) => {
   const [data, setData] = useState<SKUData[]>([]);
   const [filteredData, setFilteredData] = useState<SKUData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isAddDataOpen, setIsAddDataOpen] = useState(false);
   const [addMethod, setAddMethod] = useState<"manual" | "csv">("manual");
   const [csvFile, setCsvFile] = useState<File | null>(null);
 
@@ -87,12 +87,17 @@ const TableView = ({ timeFrame, category, searchQuery }: TableViewProps) => {
     // Get current date in ISO format (YYYY-MM-DD)
     const currentDate = new Date().toISOString().split('T')[0];
     
-    // Add the new item to the data with the required date property
+    // Add the new item to the data with all required properties
     const newItem: SKUData = {
       id: newId,
-      ...values,
+      sku: values.sku,
+      productName: values.productName,
+      category: values.category,
+      currentStock: values.currentStock,
+      forecastSales: values.forecastSales,
+      recommendedOrder: values.recommendedOrder,
+      revenue: values.revenue,
       date: currentDate,
-      // Add default values for optional properties in SKUData
       actualSales: 0,
       forecastStock: Math.max(0, values.currentStock - values.forecastSales),
       accuracy: 100,
