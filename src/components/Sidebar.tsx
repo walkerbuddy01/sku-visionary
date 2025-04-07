@@ -1,11 +1,33 @@
 
 import { useState } from "react";
-import { Home, BarChart2, ShoppingCart, Package, Settings, Menu, X } from "lucide-react";
+import { Home, BarChart2, ShoppingCart, Package, Settings, Menu, X, User, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Handle logout functionality here
+    console.log("Logging out");
+    // For demonstration, navigate to login page
+    navigate("/login");
+  };
+
+  const handleProfileSettings = () => {
+    // Handle profile settings navigation
+    console.log("Navigate to profile settings");
+    // You would navigate to profile settings page here
+  };
 
   return (
     <>
@@ -40,15 +62,30 @@ const Sidebar = () => {
         </div>
         
         <div className="p-4 border-t border-indigo-800">
-          <div className="flex items-center">
-            <div className="h-8 w-8 rounded-full bg-indigo-700 flex items-center justify-center">
-              <span className="text-sm font-medium">JD</span>
-            </div>
-            <div className="ml-3">
-              <p className="text-sm font-medium">John Doe</p>
-              <p className="text-xs text-indigo-300">Admin</p>
-            </div>
-          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <div className="flex items-center cursor-pointer hover:bg-indigo-800 p-2 rounded-md transition-colors">
+                <div className="h-8 w-8 rounded-full bg-indigo-700 flex items-center justify-center">
+                  <span className="text-sm font-medium">JD</span>
+                </div>
+                <div className="ml-3">
+                  <p className="text-sm font-medium">John Doe</p>
+                  <p className="text-xs text-indigo-300">Admin</p>
+                </div>
+              </div>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56" align="end" side="top" sideOffset={16}>
+              <DropdownMenuItem onClick={handleProfileSettings} className="cursor-pointer">
+                <User className="mr-2 h-4 w-4" />
+                <span>Profile Settings</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={handleLogout} className="text-red-500 cursor-pointer">
+                <LogOut className="mr-2 h-4 w-4" />
+                <span>Logout</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
 
