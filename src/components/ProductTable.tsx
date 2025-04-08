@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import {
   Table,
@@ -257,8 +256,10 @@ const ProductTable = ({ searchQuery }: ProductTableProps) => {
                           </span>
                         </TableCell>
                         <TableCell className="text-center">
-                          <Badge variant={product.status === 'active' ? "success" : "outline"}
-                                className={product.status === 'active' ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}>
+                          <Badge 
+                            variant={product.status === 'active' ? "default" : "outline"}
+                            className={product.status === 'active' ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}
+                          >
                             {product.status === 'active' ? 'Active' : 'Draft'}
                           </Badge>
                         </TableCell>
