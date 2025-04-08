@@ -10,12 +10,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
-
+  const location = useLocation();
+  
   const handleLogout = () => {
     // Handle logout functionality here
     console.log("Logging out");
@@ -54,11 +55,36 @@ const Sidebar = () => {
         </div>
         
         <div className="flex flex-col flex-1 py-6 overflow-y-auto">
-          <SidebarItem icon={<Home size={20} />} label="Dashboard" isActive={false} />
-          <SidebarItem icon={<BarChart2 size={20} />} label="Forecasting" isActive={true} />
-          <SidebarItem icon={<ShoppingCart size={20} />} label="Orders" isActive={false} />
-          <SidebarItem icon={<Package size={20} />} label="Inventory" isActive={false} />
-          <SidebarItem icon={<Settings size={20} />} label="Settings" isActive={false} />
+          <SidebarItem 
+            icon={<Home size={20} />} 
+            label="Dashboard" 
+            isActive={location.pathname === '/'} 
+            onClick={() => navigate('/')}
+          />
+          <SidebarItem 
+            icon={<BarChart2 size={20} />} 
+            label="Forecasting" 
+            isActive={location.pathname === '/forecasting'} 
+            onClick={() => navigate('/forecasting')}
+          />
+          <SidebarItem 
+            icon={<Package size={20} />} 
+            label="Products" 
+            isActive={location.pathname === '/products'} 
+            onClick={() => navigate('/products')}
+          />
+          <SidebarItem 
+            icon={<ShoppingCart size={20} />} 
+            label="Orders" 
+            isActive={location.pathname === '/orders'} 
+            onClick={() => navigate('/orders')}
+          />
+          <SidebarItem 
+            icon={<Settings size={20} />} 
+            label="Settings" 
+            isActive={location.pathname === '/settings'} 
+            onClick={() => navigate('/settings')}
+          />
         </div>
         
         <div className="p-4 border-t border-indigo-800">
@@ -103,11 +129,13 @@ const Sidebar = () => {
 const SidebarItem = ({ 
   icon, 
   label, 
-  isActive 
+  isActive,
+  onClick
 }: { 
   icon: React.ReactNode; 
   label: string; 
-  isActive: boolean 
+  isActive: boolean;
+  onClick: () => void;
 }) => {
   return (
     <div 
@@ -117,6 +145,7 @@ const SidebarItem = ({
           ? "bg-indigo-800 text-white border-l-4 border-white font-medium" 
           : "text-indigo-300 hover:bg-indigo-800/70 hover:text-white"
       )}
+      onClick={onClick}
     >
       <span className="mr-3">{icon}</span>
       <span>{label}</span>
